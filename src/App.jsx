@@ -2,8 +2,8 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
-	const [title, setTitle] = useState(0)
-	const [body, setBody] = useState(0)
+	const [title, setTitle] = useState('')
+	const [body, setBody] = useState('')
 
 	return (
 	<>
@@ -13,8 +13,12 @@ function App() {
 			<li>React Router</li>
 		</aside>
 		<main className='h-screen mx-64 flex flex-col items-stretch'>
-			<input type='text' value={title} onChange={e => setTitle(e.target.value)} />
-			<input type='text' value={body} onChange={e => setBody(e.target.value)} />
+			<input type='text' value={title} onChange={e => setTitle(e.target.value)} 
+				placeholder='Title'
+				className='appearance-none'/>
+			<input type='text' value={body} onChange={e => setBody(e.target.value)} 
+				placeholder='body...'
+				className='appearance-none h-40'/>
 		</main>
 	</>
 	)
