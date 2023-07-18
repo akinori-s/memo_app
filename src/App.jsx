@@ -8,18 +8,41 @@ function App() {
 
 	function newPage() {
 		var date = new Date(Date.now())
-		setPages(currentPages => {
-			return [...currentPages, { id: crypto.randomUUID(),
-				title,
-				body,
-				last_updated: date.toUTCString() }]
-		})
+		if (title === '' && body === '') {
+			return
+		}
+		var exists = pages.find(page => page.title === title)
+		if (exists) {
+			const newState = pages.map(page => {
+				if (page.title === title) {
+					return {...page, title, body, last_updated: date.toUTCString()};
+				} else {
+					return page;
+				}
+			});
+			setPages(newState);
+		} else {
+			setPages(currentPages => {
+				return [...currentPages, { id: crypto.randomUUID(),
+					title,
+					body,
+					last_updated: date.toUTCString() }]
+				})
+		}
 		localStorage.setItem('pages', JSON.stringify(pages))
 		setTitle('')
 		setBody('')
 	}
 
+	function openPage(id) {
+		newPage()
+		var page = pages.find(page => page.id === id)
+		setTitle(page.title)
+		setBody(page.body)
+	}
+
 	console.log(pages)
+	
 	return (
 	<>
 		<header className='text-center text-2xl py-4'>React App</header>
@@ -30,7 +53,8 @@ function App() {
 			</button>
 			<ul>
 				{pages.map(page => {
-					return <li key={page.id}>{page.title}</li>
+					return <li className='bg-green-300 w-300px' key={page.id} onClick={() => openPage(page.id)}
+						>{page.title}</li>
 				})}
 			</ul>
 		</aside>
