@@ -1,10 +1,15 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
 	const [title, setTitle] = useState('')
 	const [body, setBody] = useState('')
 	const [pages, setPages] = useState([])
+
+	useEffect(() => {
+		const pages = JSON.parse(localStorage.getItem('pages')) || []
+		setPages(pages)
+	}, []);
 
 	function newPage() {
 		var date = new Date(Date.now())
