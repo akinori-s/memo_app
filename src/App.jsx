@@ -8,7 +8,11 @@ function App() {
 
 	useEffect(() => {
 		const pages = JSON.parse(localStorage.getItem('pages')) || []
+		const title = localStorage.getItem('title') || ''
+		const body = localStorage.getItem('body') || ''
 		setPages(pages)
+		setTitle(title)
+		setBody(body)
 	}, []);
 
 	function newPage() {
@@ -46,6 +50,14 @@ function App() {
 		setBody(page.body)
 	}
 
+	function handlePageTitleFocusOut(e) {
+		localStorage.setItem('title', title)
+	}
+
+	function handlePageBodyFocusOut(e) {
+		localStorage.setItem('body', body)
+	}
+
 	console.log(pages)
 	
 	return (
@@ -64,10 +76,10 @@ function App() {
 			</ul>
 		</aside>
 		<main className='h-screen mx-64 flex flex-col items-stretch'>
-			<input type='text' value={title} onChange={e => setTitle(e.target.value)} 
+			<input type='text' value={title} onChange={e => setTitle(e.target.value)} onBlur={e => handlePageTitleFocusOut(e)} 
 				placeholder='Title'
 				className='appearance-none'/>
-			<input type='text' value={body} onChange={e => setBody(e.target.value)} 
+			<input type='text' value={body} onChange={e => setBody(e.target.value)} onBlur={e => handlePageBodyFocusOut(e)} 
 				placeholder='body...'
 				className='appearance-none h-40'/>
 		</main>
