@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
+	const [uuid, setUuid] = useState()
 	const [title, setTitle] = useState('')
 	const [body, setBody] = useState('')
 	const [pages, setPages] = useState([])
@@ -10,9 +11,11 @@ function App() {
 		const pages = JSON.parse(localStorage.getItem('pages')) || []
 		const title = localStorage.getItem('title') || ''
 		const body = localStorage.getItem('body') || ''
+		const uuid = localStorage.getItem('uuid') || crypto.randomUUID()
 		setPages(pages)
 		setTitle(title)
 		setBody(body)
+		setUuid(uuid)
 	}, []);
 
 	function newPage() {
@@ -20,10 +23,10 @@ function App() {
 		if (title === '' && body === '') {
 			return
 		}
-		var exists = pages.find(page => page.title === title)
+		var exists = pages.find(page => page.id === uuid)
 		if (exists) {
 			const newState = pages.map(page => {
-				if (page.title === title) {
+				if (page.uuid === uuid) {
 					return {...page, title, body, last_updated: date.toUTCString()};
 				} else {
 					return page;
@@ -32,7 +35,7 @@ function App() {
 			setPages(newState);
 		} else {
 			setPages(currentPages => {
-				return [...currentPages, { id: crypto.randomUUID(),
+				return [...currentPages, { id: uuid,
 					title,
 					body,
 					last_updated: date.toUTCString() }]
@@ -41,6 +44,7 @@ function App() {
 		localStorage.setItem('pages', JSON.stringify(pages))
 		setTitle('')
 		setBody('')
+		setUuid(crypto.randomUUID())
 	}
 
 	function openPage(id) {
@@ -48,6 +52,7 @@ function App() {
 		var page = pages.find(page => page.id === id)
 		setTitle(page.title)
 		setBody(page.body)
+		setUuid(page.id)
 	}
 
 	function handlePageTitleFocusOut(e) {
@@ -58,8 +63,6 @@ function App() {
 		localStorage.setItem('body', body)
 	}
 
-	console.log(pages)
-	
 	return (
 	<>
 		<header className='text-center text-2xl py-4'>React App</header>
