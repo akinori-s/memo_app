@@ -45,6 +45,7 @@ function App() {
 		setTitle('')
 		setBody('')
 		setUuid(crypto.randomUUID())
+
 	}
 
 	function openPage(id) {
