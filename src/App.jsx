@@ -26,7 +26,7 @@ function App() {
 		var exists = pages.find(page => page.id === uuid)
 		if (exists) {
 			const newState = pages.map(page => {
-				if (page.uuid === uuid) {
+				if (page.id === uuid) {
 					return {...page, title, body, last_updated: date.toUTCString()};
 				} else {
 					return page;
